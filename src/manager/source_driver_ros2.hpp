@@ -391,12 +391,24 @@ inline sensor_msgs::msg::Imu SourceDriver::ToRosMsg(const LidarImuData &imu_conf
     RCLCPP_ERROR(node_ptr_->get_logger(), "does not support timestamps greater than 19 January 2038 03:14:07 (now %lf)\n", imu_config_.timestamp);
   }
   ros_msg.header.frame_id = frame_id_;
-  ros_msg.linear_acceleration.x = (imu_config_.imu_accel_x);
-  ros_msg.linear_acceleration.y = (imu_config_.imu_accel_y);
-  ros_msg.linear_acceleration.z = (imu_config_.imu_accel_z);
-  ros_msg.angular_velocity.x = (imu_config_.imu_ang_vel_x);
-  ros_msg.angular_velocity.y = (imu_config_.imu_ang_vel_y);
-  ros_msg.angular_velocity.z = (imu_config_.imu_ang_vel_z);
+  // ros_msg.linear_acceleration.x = (imu_config_.imu_accel_x);
+  // ros_msg.linear_acceleration.y = (imu_config_.imu_accel_y);
+  // ros_msg.linear_acceleration.z = (imu_config_.imu_accel_z);
+  // ros_msg.angular_velocity.x = (imu_config_.imu_ang_vel_x);
+  // ros_msg.angular_velocity.y = (imu_config_.imu_ang_vel_y);
+  // ros_msg.angular_velocity.z = (imu_config_.imu_ang_vel_z);
+
+  //MODIFIED UNITS!!!
+  ros_msg.linear_acceleration.x = imu_config_.imu_accel_x * 9.80665;
+  ros_msg.linear_acceleration.y = imu_config_.imu_accel_y * 9.80665;
+  ros_msg.linear_acceleration.z = imu_config_.imu_accel_z * 9.80665;
+
+  ros_msg.angular_velocity.x = imu_config_.imu_ang_vel_x * M_PI / 180.0;
+  ros_msg.angular_velocity.y = imu_config_.imu_ang_vel_y * M_PI / 180.0;
+  ros_msg.angular_velocity.z = imu_config_.imu_ang_vel_z * M_PI / 180.0;
+
+
+
   return ros_msg;
 }
 
